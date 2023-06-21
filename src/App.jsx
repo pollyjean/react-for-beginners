@@ -5,6 +5,7 @@ const App = () => {
   const [coins, setCoins] = useState([]);
   const [dollars, setDollars] = useState(0);
   const [selected, setSelected] = useState(0);
+  const [coinSymbol, setCoinSymbol] = useState("");
   const selectForm = document.querySelector("select");
   const onChange = (event) => {
     const {
@@ -12,9 +13,14 @@ const App = () => {
     } = event;
     setDollars(value);
   };
+  const onSelect = () => {
+    setSelected("");
+  };
   const onSubmit = (event) => {
     event.preventDefault();
+    const option = selectForm.querySelector("option:checked");
     setSelected(selectForm.value);
+    setCoinSymbol(option.getAttribute("data-symbol"));
   };
   useEffect(() => {
     fetch("https://api.coinpaprika.com/v1/tickers")
@@ -22,6 +28,9 @@ const App = () => {
       .then((json) => {
         setCoins(json);
         setLoading(false);
+      })
+      .catch((error) => {
+        console.log("error : ", error);
       });
   }, []);
 
@@ -33,19 +42,19 @@ const App = () => {
       ) : (
         <>
           <form onSubmit={onSubmit}>
-            <select>
+            <select onChange={onSelect}>
               {coins.map((item) => (
-                <option key={item.id} value={item.quotes.USD.price}>
+                <option key={item.id} value={item.quotes.USD.price} data-symbol={item.symbol}>
                   [{item.symbol}]{item.name} : {item.quotes.USD.price} USD
                 </option>
               ))}
             </select>
             <hr />
             <label htmlFor="dollar">Dollar </label>
-            <input id="dollar" type="text" value={dollars} onChange={onChange} maxlength="20" />
+            <input id="dollar" type="text" value={dollars} onChange={onChange} maxLength="20" />
             <button type="submit">Exchange to Coin</button>
           </form>
-          <p>{dollars === 0 ? "" : `$${dollars / selected} USD`}</p>
+          <p>{selected ? (!dollars ? "" : `${dollars / selected} ${coinSymbol}`) : ""}</p>
         </>
       )}
     </div>
