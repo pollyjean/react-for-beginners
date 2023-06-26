@@ -15,7 +15,7 @@ const App = () => {
     getMovies();
   }, []);
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <Routes>
         <Route path="/" element={<Home loading={loading} movies={movies} />} />
         <Route path="/movie/:id" element={<Detail loading={loading} movies={movies} />} />
