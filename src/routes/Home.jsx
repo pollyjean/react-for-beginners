@@ -1,4 +1,4 @@
-import Movie from '../components/Movie';
+import Movie from "../components/Movie";
 
 const Home = ({ loading, movies }) => {
   return (
@@ -11,6 +11,7 @@ const Home = ({ loading, movies }) => {
             {movies.map((movie) => (
               <Movie
                 key={movie.id}
+                id={movie.id}
                 coverImg={movie.medium_cover_image}
                 coverImg2x={movie.large_cover_image}
                 title={movie.title}
