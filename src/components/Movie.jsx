@@ -9,7 +9,7 @@ const Movie = ({ coverImg, coverImg2x, title, summary, year, genres, id }) => {
         <img src={coverImg2x} alt={`${title}'s poster`} />
       </picture>
       <h2>
-        <Link to={`/movie/${id}`}>
+        <Link to={`${process.env.PUBLIC_URL}/movie/${id}`}>
           {title} {`(${year})`}
         </Link>
       </h2>
